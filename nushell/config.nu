@@ -1,6 +1,6 @@
 # Nushell Config File
 #
-# version = "0.98.0"
+# version = "0.100.0"
 
 # For more information on defining custom themes, see
 # https://www.nushell.sh/book/coloring_and_theming.html
@@ -159,7 +159,7 @@ $env.config = {
     }
 
     table: {
-        mode: rounded # basic, compact, compact_double, light, thin, with_love, rounded, reinforced, heavy, none, other
+        mode: heavy #MODIFIED # basic, compact, compact_double, light, thin, with_love, rounded, reinforced, heavy, none, other
         index_mode: always # "always" show indexes, "never" show indexes, "auto" = show indexes when a table has "index" column
         show_empty: true # show 'empty list' and 'empty record' placeholders for command output
         padding: { left: 1, right: 1 } # a left right padding of each column in a table
@@ -168,7 +168,8 @@ $env.config = {
             wrapping_try_keep_words: true # A strategy used by the 'wrapping' methodology
             truncating_suffix: "..." # A suffix used by the 'truncating' methodology
         }
-        header_on_separator: true #Modified # show header text on separator/border line
+        header_on_separator: true #MODIFIED # show header text on separator/border line
+        footer_inheritance: false # render footer in parent table if child is big enough (extended table option)
         # abbreviated_row_count: 10 # limit data rows from top and bottom after reaching a set point
     }
 
@@ -229,7 +230,7 @@ $env.config = {
     }
 
     cursor_shape: {
-        emacs: inherit #Modified # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (line is the default)
+        emacs: inherit #MODIFIED # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (line is the default)
         vi_insert: block # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (block is the default)
         vi_normal: underscore # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (underscore is the default)
     }
@@ -237,7 +238,7 @@ $env.config = {
     color_config: $dark_theme # if you want a more interesting theme, you can replace the empty record with `$dark_theme`, `$light_theme` or another custom record
     footer_mode: 25 # always, never, number_of_rows, auto
     float_precision: 2 # the precision for displaying floats in tables
-    buffer_editor: null # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
+    buffer_editor: null # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.VISUAL and $env.EDITOR
     use_ansi_coloring: true
     bracketed_paste: true # enable bracketed paste, currently useless on windows
     edit_mode: emacs # emacs, vi
@@ -256,7 +257,7 @@ $env.config = {
         # 133;C - Mark pre-execution
         # 133;D;exit - Mark execution finished with exit code
         # This is used to enable terminals to know where the prompt is, the command is, where the command finishes, and where the output of the command is
-        osc133: false #Modified to workaround WT; Default was true
+        osc133: false #MODIFIED
         # osc633 is closely related to osc133 but only exists in visual studio code (vscode) and supports their shell integration features
         # 633;A - Mark prompt start
         # 633;B - Mark prompt end
@@ -404,9 +405,16 @@ $env.config = {
             }
         }
         {
+            name: completion_previous_menu
+            modifier: shift
+            keycode: backtab
+            mode: [emacs, vi_normal, vi_insert]
+            event: { send: menuprevious }
+        }
+        {
             name: ide_completion_menu
             modifier: control
-            keycode: char_n
+            keycode: space
             mode: [emacs vi_normal vi_insert]
             event: {
                 until: [
@@ -429,13 +437,6 @@ $env.config = {
             keycode: f1
             mode: [emacs, vi_insert, vi_normal]
             event: { send: menu name: help_menu }
-        }
-        {
-            name: completion_previous_menu
-            modifier: shift
-            keycode: backtab
-            mode: [emacs, vi_normal, vi_insert]
-            event: { send: menuprevious }
         }
         {
             name: next_page_menu
@@ -619,6 +620,18 @@ $env.config = {
             event: { edit: movetolineend }
         }
         {
+            name: move_down
+            modifier: control
+            keycode: char_n
+            mode: [emacs, vi_normal, vi_insert]
+            event: {
+                until: [
+                    { send: menudown }
+                    { send: down }
+                ]
+            }
+        }
+        {
             name: move_up
             modifier: control
             keycode: char_p
@@ -627,18 +640,6 @@ $env.config = {
                 until: [
                     { send: menuup }
                     { send: up }
-                ]
-            }
-        }
-        {
-            name: move_down
-            modifier: control
-            keycode: char_t
-            mode: [emacs, vi_normal, vi_insert]
-            event: {
-                until: [
-                    { send: menudown }
-                    { send: down }
                 ]
             }
         }

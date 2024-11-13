@@ -1,7 +1,7 @@
 # My aliases
 alias ll = ls -al
 alias la = ls -am
-alias cat = bat
+alias cat = bat -P
 
 # Git
 #
