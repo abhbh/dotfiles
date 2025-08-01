@@ -25,9 +25,15 @@
     "custom/powerbtn",
     "group/right",
   ],
+  "niri/workspaces": {
+    "on-scroll-up": "niri msg action focus-workspace-up",
+    "on-scroll-down": "niri msg action focus-workspace-down",
+  },
   "niri/window": {
     "icon": true,
     "icon-size": 16,
+    "on-scroll-up": "niri msg action focus-window-up-or-column-left",
+    "on-scroll-down": "niri msg action focus-window-down-or-column-right",
   },
   "custom/powerbtn": {
     "on-click": "wlogout",

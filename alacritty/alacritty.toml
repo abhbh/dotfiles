@@ -1,0 +1,20 @@
+general.import = [
+  "~/.config/alacritty/catppuccin-latte.toml"
+  # "~/.config/alacritty/catppuccin-mocha.toml"
+]
+
+[font]
+normal = { family = "Source Code Pro", style = "Medium" }
+size = 14.0
+
+[window]
+padding = { x = 6, y = 4 }
+dimensions = { lines = 30, columns = 90 }
+
+[keyboard]
+bindings = [
+	{ key = "N", mods = "Control|Shift", action = "CreateNewWindow" },
+]
+
+[env]
+SHELL = "/usr/bin/fish"
